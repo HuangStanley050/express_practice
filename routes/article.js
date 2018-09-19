@@ -20,7 +20,8 @@ router.post("/", (req, res, next) => {
             return;
         }
         else {
-            return res.redirect("/");
+            req.flash("success", "Article added");
+            res.redirect("/articles");
         }
     });
 });

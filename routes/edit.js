@@ -30,6 +30,7 @@ router.post('/:id', (req, res, next) => {
             console.log(err);
         }
         else {
+            req.flash("success", "Article updated");
             res.redirect("/articles");
         }
     });

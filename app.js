@@ -2,6 +2,9 @@ var createError = require('http-errors');
 var express = require('express');
 var methodOverride = require('method-override')
 var path = require('path');
+var expressValidator = require("express-validator");
+const flash = require("connect-flash");
+const session = require("express-session");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser')
 var logger = require('morgan');
@@ -12,6 +15,7 @@ var articleRouter = require("./routes/article");
 var editPage = require("./routes/edit");
 var showRouter = require("./routes/show");
 var deleteRouter = require("./routes/delete");
+
 
 
 mongoose.connect("mongodb://admin:test1234@ds257372.mlab.com:57372/simple_databse", { useNewUrlParser: true });
@@ -35,6 +39,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+//express session middleware
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+
+}));
+
+//express message middleware
+
+app.use(require('connect-flash')());
+app.use(function(req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+
 
 app.use('/', indexRouter);
 app.use('/add', articleRouter);
