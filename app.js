@@ -63,7 +63,7 @@ app.use('/add', articleRouter);
 app.use("/articles", showRouter);
 app.use("/article/edit", editPage);
 app.use("/article/delete", deleteRouter);
-app.use('/users', usersRouter);
+app.use('/users/register', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
