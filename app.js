@@ -17,7 +17,7 @@ var showRouter = require("./routes/show");
 var deleteRouter = require("./routes/delete");
 var loginRouter = require("./routes/login");
 const config = require("./config/database");
-
+const passport = require("passport");
 
 
 mongoose.connect(config.database, { useNewUrlParser: true });
@@ -42,6 +42,10 @@ app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+require("./config/passport")(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
 //express session middleware
 app.use(session({
   secret: 'keyboard cat',
@@ -58,14 +62,17 @@ app.use(function(req, res, next) {
   next();
 });
 
-
+app.get("*", (req, res, next) => {
+  res.locals.user = req.user | null;
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/add', articleRouter);
 app.use("/articles", showRouter);
 app.use("/article/edit", editPage);
 app.use("/article/delete", deleteRouter);
-app.use("/user/login", loginRouter);
+app.use("/user", loginRouter);
 app.use('/users/register', usersRouter);
 
 // catch 404 and forward to error handler
