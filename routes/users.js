@@ -10,6 +10,10 @@ router.get('/', (req, res, next) => {
     res.render('register');
 });
 
+router.get("/login", (req, res) => {
+    res.send("Login");
+})
+
 router.post("/", [
     check('name').not().isEmpty(),
     check("email").isEmail(),

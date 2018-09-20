@@ -15,10 +15,12 @@ var articleRouter = require("./routes/article");
 var editPage = require("./routes/edit");
 var showRouter = require("./routes/show");
 var deleteRouter = require("./routes/delete");
+var loginRouter = require("./routes/login");
+const config = require("./config/database");
 
 
 
-mongoose.connect("mongodb://admin:test1234@ds257372.mlab.com:57372/simple_databse", { useNewUrlParser: true });
+mongoose.connect(config.database, { useNewUrlParser: true });
 
 mongoose.connection.once("open", () => {
   console.log("connected to database");
@@ -63,6 +65,7 @@ app.use('/add', articleRouter);
 app.use("/articles", showRouter);
 app.use("/article/edit", editPage);
 app.use("/article/delete", deleteRouter);
+app.use("/user/login", loginRouter);
 app.use('/users/register', usersRouter);
 
 // catch 404 and forward to error handler
